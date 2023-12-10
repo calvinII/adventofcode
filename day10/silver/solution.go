@@ -23,6 +23,7 @@ type pipe struct {
 }
 
 // https://rosettacode.org/wiki/Shoelace_formula_for_polygonal_area
+// Hier berechnen wir die Fläche inclusive der Linien drumrum ...
 
 func shoelace(pts []coord) int {
     sum := 0
@@ -31,6 +32,9 @@ func shoelace(pts []coord) int {
         sum += p0.y*p1.x - p0.x*p1.y
         p0 = p1
     }
+	if sum < 0 {
+		sum = -sum
+	}
     return sum / 2
 }
 
@@ -125,8 +129,9 @@ func main() {
 	fmt.Println(pipeLoop)
 	fmt.Println("silver: ",steps/2)
 
-
-    fmt.Println(shoelace(pipeLoop))
+	//https://de.wikipedia.org/wiki/Satz_von_Pick 
+	// damit rechnen wir die Linie noch raus
+    fmt.Println("Gold: ", shoelace(pipeLoop)-steps/2+1)
 
 	
 }

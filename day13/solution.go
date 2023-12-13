@@ -35,16 +35,23 @@ func (p *pattern) find_horizontal_mirror() *mirror {
 }
 
 func (m *mirror) test_horizontal_mirror() (bool,int) {
-	for i,j := m.l,m.l-1 ; i < len(*(m.p))-1 && j > 0 ; i,j = i+1,j-1 {
+	if m.l == 0 {
+		return false,0
+	}
+	for i,j := m.l,m.l-1 ; i < len(*(m.p))-1 && j >= 0 ; i,j = i+1,j-1 {
+		fmt.Println((*(m.p))[i])
+		fmt.Println((*(m.p))[j])
 		if (*(m.p))[i] != (*(m.p))[j] {
+			fmt.Println("falsch")
 			return false,0
 		}
 	}
+	fmt.Println("getestet:",m.l)
 	return true,m.l
 }
 
 func (p *pattern) rotate() *pattern {
-	np := make(pattern, 1)
+	np := make(pattern, 0)
 
 	for i := 0 ; i < len((*p)[0])-1 ; i++ {
 		var line strings.Builder
@@ -73,11 +80,12 @@ func main() {
 		m,l := (&t).find_horizontal_mirror().test_horizontal_mirror()
 		if m {
 			silver += (l*100)
-			fmt.Println("Pattern: ",i,l)
+			fmt.Println("hPattern: ",i,l*100)
 		} else {
 			m,l = (&t).rotate().find_horizontal_mirror().test_horizontal_mirror()
 			if m {
 				silver += l
+				fmt.Println("vPattern: ",i,l)
 			}
 		}
 	}

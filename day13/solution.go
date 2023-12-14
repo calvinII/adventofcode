@@ -76,18 +76,19 @@ func main() {
 		p[num] = append(p[num], line)
 
 	}
+	fmt.Println("Anzahl: ",len(p))
 	for i, t := range p {
 		m,l := (&t).find_horizontal_mirror().test_horizontal_mirror()
 		if m {
 			silver += (l*100)
 			fmt.Println("hPattern: ",i,l*100)
-		} else {
-			m,l = (&t).rotate().find_horizontal_mirror().test_horizontal_mirror()
+		}
+		m,l = (&t).rotate().find_horizontal_mirror().test_horizontal_mirror()
 			if m {
 				silver += l
 				fmt.Println("vPattern: ",i,l)
 			}
-		}
+		
 	}
 
 	fmt.Println(silver)

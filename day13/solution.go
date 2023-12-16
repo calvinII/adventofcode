@@ -21,21 +21,37 @@ func readLines() []string {
 	return strings.Split(string(rawData), "\n")
 }
 
+func diff_line(l1,l2 string) int {
+	diff := 0
+	for i := 0 ; i < len(l1); i++ {
+		if l1[i] != l2[i] {diff++}
+	}
+	if diff == 1{
+		fmt.Println("diffed line",l1)
+		fmt.Println("diffed line",l2)
+	}
+	return diff
+}
+
 func (p *pattern) find_mirror() (bool,int) {
+	smudge := false
 	for i, l := range *p {
 		fmt.Println("Zeile: ",l)
 		if i >= 1 {
-			if l == (*p)[i-1] {
+			if diff_line(l,(*p)[i-1]) <=1 {
+				smudge = diff_line(l,(*p)[i-1]) == 1
 				fmt.Println(i, ": ", l)
 				ret := true
 				for m,n := i, i-1; m <= len(*p)-1 && n >= 0 ; m,n = m+1,n-1 {
 					fmt.Println("testing(",len(*p),"): ",m,"|",n)
-					if (*p)[m] != (*p)[n] {
+					if diff_line((*p)[m],(*p)[n]) >1 {
 						ret = false
 						break
+					} else if diff_line((*p)[m],(*p)[n]) == 1 {
+						smudge = true
 					}
 				}
-				if ret { return ret,i} 	
+				if ret && smudge { return ret,i} 	
 			}
 		}
 	}
